@@ -2,8 +2,7 @@ streamlit
 langchain 
 langchain-core 
 langchain-community 
-langchain-openai 
-chromadb
+langchain-openai
 pypdf
 pypdf2
 chromadb==0.4.15
