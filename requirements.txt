@@ -7,3 +7,4 @@ pypdf
 pypdf2
 chromadb
 pysqlite3-binary
+pdfkit
