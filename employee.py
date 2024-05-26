@@ -108,6 +108,25 @@ def generate_evaluation_report(emp_id):
     """
     return report
 
+        # Create HTML content from the response
+    html_content = f/"""
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }}
+    </style>
+    </head>
+    <body>
+        {report.replace('\n', '<br>')}
+    </body>
+    </html>
+    """
+    return html_content
+
 def main():
     st.title("Employee Evaluation Report")
 
@@ -120,42 +139,29 @@ def main():
         submit_button = st.form_submit_button("Generate Report")
 
     if submit_button:
-        # Generate the report content
-        report_content = generate_evaluation_report(emp_id)
+        # Generate the HTML content for the report
+        html_content = generate_evaluation_report(emp_id)
         st.write("### Employee Evaluation Report")
-        st.markdown(report_content)
+        st.markdown(html_content, unsafe_allow_html=True)
 
-        # Generate PDF from report content and create download button
-        html_content = f/"""
-        <html>
-        <head>
-        <meta charset="utf-8">
-        <style>
-            body {{
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }}
-        </style>
-        </head>
-        <body>
-            {report_content.replace('\n', '<br>')}
-        </body>
-        </html>
-        """
-        pdf = pdfkit.from_string(html_content, False)
-        with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
-            tmpfile.write(pdf)
-            tmpfile.flush()
-            tmpfile.close()
-            with open(tmpfile.name, "rb") as f:
-                # Streamlit method to create a download button immediately
-                st.download_button(
-                    label="Download PDF",
-                    data=f.read(),
-                    file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
-                    mime="application/pdf"
-                )
-            os.unlink(tmpfile.index)
+        # Adding an Export to PDF button
+        if st.button('Export to PDF'):
+            # Converting HTML to PDF
+            pdf = pdfkit.from_string(html_content, False)
+            # Using a temporary file to hold the PDF
+            with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
+                tmpfile.write(pdf)
+                tmpfile.flush()  # Ensure all data is written to the file
+                tmpfile.close()  # Close the file to ensure it can be read on Windows systems
+                with open(tmpfile.name, "rb") as f:
+                    # Streamlit method to create a download button
+                    st.download_button(
+                        label="Download PDF",
+                        data=f.read(),
+                        file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
+                        mime="application/pdf"
+                    )
+                os.unlink(tmpfile.name)  # Clean up the temporary file
 
 
 
