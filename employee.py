@@ -130,12 +130,12 @@ def main():
             </html>
             """
             pdf = pdfkit.from_string(html_content, False)
-            with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
+            with NamedTemporaryFile(delete=True, suffix=".pdf") as tmpfile:
                 tmpfile.write(pdf)
-                tmpfile.flush()
+                tmpfile.seek(0)
                 st.download_button(
                     label="Download PDF",
-                    data=tmpfile.name,
+                    data=tmpfile.read(),
                     file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
                     mime="application/pdf"
                 )
