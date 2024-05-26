@@ -111,32 +111,35 @@ def main():
         st.write("### Employee Evaluation Report")
         st.markdown(response)
 
-                # Generate PDF from response and create a download button
+        # Button to export the response to PDF
         if st.button('Export to PDF'):
-            html = f"""
+            html_content = f/"""
             <html>
             <head>
+            <meta charset="utf-8">
             <style>
-            /* Add your CSS styling here */
-            body {{
-                font-family: Arial, sans-serif;
-            }}
+                body {{
+                    font-family: Arial, sans-serif;
+                    margin: 20px;
+                }}
             </style>
             </head>
             <body>
-            {response}
+                {response.replace('\n', '<br>')}  <!-- Convert markdown newlines to HTML line breaks -->
             </body>
             </html>
             """
-            pdf = pdfkit.from_string(html, False)
-            with NamedTemporaryCode(mode='wb') as tmpfile:
+            pdf = pdfkit.from_string(html_content, False)
+            with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
                 tmpfile.write(pdf)
+                tmpfile.flush()
                 st.download_button(
                     label="Download PDF",
-                    data=tmpfile,
+                    data=tmpfile.name,
                     file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
                     mime="application/pdf"
                 )
+
 
 if __name__ == "__main__":
     main()
