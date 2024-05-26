@@ -35,22 +35,39 @@ def process_file():
     vectordb = Chroma.from_documents(splits, embedding=embeddings, persist_directory=persist_directory)
     vectordb.persist()
 
-def read_doc_and_generate_response(prompt):
+def read_doc_and_generate_response(emp_id):
     prompt = f"""
-Please generate a {prompt} Employee Evolution Report based on his evaluations contained in the PDF. The report should include the following sections:
+    Please generate an Employee Evolution Report for employee ID {empid}. This report should provide a comprehensive overview of the employee's performance and contributions over the evaluation period from January to December 2023.
 
-1. Introduction: Brief overview of the purpose of this report and the evaluation period it covers, specifically for {prompt}.
-2. Employee Summary: Detail {prompt}’s employee ID, positions held, and department assignments.
-3. Performance Overview:
-    - Summarize {prompt}'s performance ratings and supervisor comments.
-    - Highlight his top performances and areas needing improvement.
-4. Detailed Analysis:
-    - Provide a detailed evaluation of {prompt} including strengths, areas for improvement, and recommended development actions.
-    - Discuss any trends or patterns observed in his performance.
-5. Conclusion: Summarize key findings and propose recommendations for {prompt}’s professional development.
-6. Appendix: Include any additional notes or raw data excerpts that are relevant to {prompt}’s evaluations.
+    1. **Introduction**:
+        - State the purpose of this report.
+        - Discuss the evaluation period and its relevance.
 
-The report should be formal, well-organized, and insightful, leveraging {prompt}'s evaluation data to provide actionable insights to management.
+    2. **Employee Summary**:
+        - Employee ID: {emp_id}
+        - Name: John Doe
+        - Position: Software Engineer
+        - Department: IT
+
+    3. **Performance Overview**:
+        - Performance Summary: Demonstrates excellent problem-solving abilities and punctuality in meeting deadlines.
+        - Top Performances and Achievements: Highlighting the development and launch of X software.
+
+    4. **Detailed Analysis**:
+        - Strengths: Technical expertise and problem-solving.
+        - Areas for Improvement: Communication and team collaboration.
+        - Future Goals: Leading major projects and enhancing team engagement.
+        - Professional Development: Impact of courses in machine learning and agile methodologies on his performance.
+
+    5. **Conclusion**:
+        - Summarize key findings and achievements.
+        - Recommendations for further professional development.
+
+    6. **Appendix**:
+        - Include any additional relevant data or feedback excerpts.
+
+    The report should be structured to provide actionable insights and detailed analysis of the employee's contributions and potential for future growth.
+
 """
     vectordb = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
     retriever = vectordb.as_retriever(search_kwargs={"k":4})
