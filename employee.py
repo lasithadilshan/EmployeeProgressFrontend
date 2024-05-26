@@ -37,21 +37,21 @@ def process_file():
 
 def read_doc_and_generate_response(prompt):
     prompt = f"""
-    Please generate an Employee Evolution Report for employee ID {emp_id}. The report should include the following sections:
+Please generate a {prompt} Employee Evolution Report based on his evaluations contained in the PDF. The report should include the following sections:
 
-    1. Introduction: Brief overview of the purpose of this report and the evaluation period it covers.
-    2. Employee Summary: Detail the employee ID {emp_id}'s positions held and department assignments over the evaluation period.
-    3. Performance Overview:
-        - Summarize the employee's performance ratings and supervisor comments.
-        - Highlight top performances and areas needing improvement.
-    4. Detailed Analysis:
-        - Provide a detailed evaluation including strengths, areas for improvement, and recommended development actions.
-        - Discuss any trends or patterns observed in the employee's performance.
-    5. Conclusion: Summarize key findings and propose recommendations for the employee’s professional development.
-    6. Appendix: Include any additional notes or raw data excerpts that are relevant to the evaluations.
+1. Introduction: Brief overview of the purpose of this report and the evaluation period it covers, specifically for {prompt}.
+2. Employee Summary: Detail {prompt}’s employee ID, positions held, and department assignments.
+3. Performance Overview:
+    - Summarize {prompt}'s performance ratings and supervisor comments.
+    - Highlight his top performances and areas needing improvement.
+4. Detailed Analysis:
+    - Provide a detailed evaluation of {prompt} including strengths, areas for improvement, and recommended development actions.
+    - Discuss any trends or patterns observed in his performance.
+5. Conclusion: Summarize key findings and propose recommendations for {prompt}’s professional development.
+6. Appendix: Include any additional notes or raw data excerpts that are relevant to {prompt}’s evaluations.
 
-    The report should be formal, well-organized, and insightful, leveraging the employee's evaluation data to provide actionable insights to management.
-    """
+The report should be formal, well-organized, and insightful, leveraging {prompt}'s evaluation data to provide actionable insights to management.
+"""
     vectordb = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
     retriever = vectordb.as_retriever(search_kwargs={"k":4})
     chain = ConversationalRetrievalChain.from_llm(llm, retriever= retriever)
