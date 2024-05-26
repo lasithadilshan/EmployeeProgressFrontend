@@ -116,7 +116,7 @@ def main():
 
     # Creating form for user input
     with st.form("emp_info_form"):
-        emp_id = st.selectbox("Select Employee ID", employeeids)
+        emp_id = st.selectbox("Select Employee ID", employee_ids)
         submit_button = st.form_submit_button("Generate Report")
 
     if submit_button:
