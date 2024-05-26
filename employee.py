@@ -37,7 +37,7 @@ def process_file():
 
 def read_doc_and_generate_response(emp_id):
     prompt = f"""
-    Please generate an Employee Evolution Report for employee ID {empid}. This report should provide a comprehensive overview of the employee's performance and contributions over the evaluation period from January to December 2023.
+    Please generate an Employee Evolution Report for employee ID {emp_id}. This report should provide a comprehensive overview of the employee's performance and contributions over the evaluation period from January to December 2023.
 
     1. **Introduction**:
         - State the purpose of this report.
