@@ -13,6 +13,9 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
 
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 embeddings = OpenAIEmbeddings()
