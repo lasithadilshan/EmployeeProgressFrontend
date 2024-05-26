@@ -111,8 +111,9 @@ def main():
         st.write("### Employee Evaluation Report")
         st.markdown(response)
 
-        # Button to export the response to PDF
+        # Adding an Export to PDF button
         if st.button('Export to PDF'):
+            # Creating HTML content from the response
             html_content = f/"""
             <html>
             <head>
@@ -125,12 +126,14 @@ def main():
             </style>
             </head>
             <body>
-                {response.replace('\n', '<br>')}  <!-- Convert markdown newlines to HTML line breaks -->
+                {response.replace('\n', '<br>')}
             </body>
             </html>
             """
+            # Converting HTML to PDF
             pdf = pdfkit.from_string(html_content, False)
-            with NamedTemporaryFile(delete=True, suffix=".pdf") as tmpfile:
+            # Using a temporary file to hold the PDF
+            with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
                 tmpfile.write(pdf)
                 tmpfile.seek(0)
                 st.download_button(
