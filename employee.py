@@ -117,20 +117,17 @@ def main():
     # Creating form for user input
     with st.form("emp_info_form"):
         emp_id = st.selectbox("Select Employee ID", employee_ids)
-
-        # Form submission button
-        submit_button = st.form_submit_button("Generate")
+        submit_button = st.form_submit_button("Generate Report")
 
     if submit_button:
-        process_file()
-        response = read_doc_and_generate_response(emp_id)
-        # report = generate_evaluation_report(emp_id)
+        # Assuming `response` is generated here by some function that creates the report
+        response = generate_evaluation_report(emp_id)  # Modify this according to actual function call
         st.write("### Employee Evaluation Report")
         st.markdown(response)
 
         # Adding an Export to PDF button
         if st.button('Export to PDF'):
-            # Creating HTML content from the response
+            # Create HTML content from the response
             html_content = f/"""
             <html>
             <head>
@@ -153,6 +150,7 @@ def main():
             with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
                 tmpfile.write(pdf)
                 tmpfile.seek(0)
+                # Streamlit method to create a download button
                 st.download_button(
                     label="Download PDF",
                     data=tmpfile.read(),
