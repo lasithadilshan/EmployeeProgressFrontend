@@ -116,7 +116,7 @@ def main():
 
     # Creating form for user input
     with st.form("emp_info_form"):
-        emp_id = st.selectbox("Select Employee ID", employee_ids)
+        emp_id = st.selectbox("Select Employee ID", employeeids)
         submit_button = st.form_submit_button("Generate Report")
 
     if submit_button:
@@ -149,14 +149,18 @@ def main():
             # Using a temporary file to hold the PDF
             with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
                 tmpfile.write(pdf)
-                tmpfile.seek(0)
-                # Streamlit method to create a download button
-                st.download_button(
-                    label="Download PDF",
-                    data=tmpfile.read(),
-                    file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
-                    mime="application/pdf"
-                )
+                tmpfile.flush()  # Ensure all data is written to the file
+                tmpfile.close()  # Close the file to ensure it can be read on Windows systems
+                with open(tmpfile.name, "rb") as f:
+                    # Streamlit method to create a download button
+                    st.download_button(
+                        label="Download PDF",
+                        data=f.read(),
+                        file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
+                        mime="application/pdf"
+                    )
+            os.unlink(tmpfile.name)  # Clean up the temporary file
+
 
 
 if __name__ == "__main__":
