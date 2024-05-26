@@ -17,13 +17,13 @@ from langchain.chains import ConversationalRetrievalChain
 llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 embeddings = OpenAIEmbeddings()
 
-file = "/files/Employee.pdf"
+file = "/Employee.pdf"
 persist_directory = "app_db"
 
 
 
 def process_file():
-    loader = PyPDFLoader('files\Employee.pdf')
+    loader = PyPDFLoader('Employee.pdf')
     docs = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
     splits = text_splitter.split_documents(docs)
