@@ -126,7 +126,7 @@ def main():
         st.markdown(report_content)
 
         # Generate PDF from report content and create download button
-        html_content = """
+        html_content = f/"""
         <html>
         <head>
         <meta charset="utf-8">
