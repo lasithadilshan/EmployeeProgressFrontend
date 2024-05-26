@@ -5,5 +5,5 @@ langchain-community
 langchain-openai
 pypdf
 pypdf2
-chromadb==0.4.15
+chromadb
 pysqlite3-binary
