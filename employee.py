@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import pdfkit
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -12,6 +13,7 @@ from langchain.vectorstores import Chroma
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
+from tempfile import NamedTemporaryFile
 
 __import__('pysqlite3')
 import sys
@@ -108,6 +110,33 @@ def main():
         # report = generate_evaluation_report(emp_id)
         st.write("### Employee Evaluation Report")
         st.markdown(response)
+
+                # Generate PDF from response and create a download button
+        if st.button('Export to PDF'):
+            html = f"""
+            <html>
+            <head>
+            <style>
+            /* Add your CSS styling here */
+            body {{
+                font-family: Arial, sans-serif;
+            }}
+            </style>
+            </head>
+            <body>
+            {response}
+            </body>
+            </html>
+            """
+            pdf = pdfkit.from_string(html, False)
+            with NamedTemporaryCode(mode='wb') as tmpfile:
+                tmpfile.write(pdf)
+                st.download_button(
+                    label="Download PDF",
+                    data=tmpfile,
+                    file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
+                    mime="application/pdf"
+                )
 
 if __name__ == "__main__":
     main()
