@@ -134,7 +134,7 @@ st.title("Employee Evaluation Report")
 employee_ids = ['E123', 'E124', 'E125']
 
 emp_id = st.selectbox("Select Employee ID", employee_ids)
-submit_button = st.form_submit_button("Generate Report")
+submit_button = st.button("Generate Report")
 
 if submit_button:
     # Generate the HTML content for the report
