@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-import pdfkit
+# import pdfkit
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -13,7 +13,7 @@ from langchain.vectorstores import Chroma
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
-from tempfile import NamedTemporaryFile
+# from tempfile import NamedTemporaryFile
 from fpdf import FPDF
 
 __import__('pysqlite3')
