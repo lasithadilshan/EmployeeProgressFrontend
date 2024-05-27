@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-# import pdfkit
+import pdfkit
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -13,8 +13,7 @@ from langchain.vectorstores import Chroma
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
-# from tempfile import NamedTemporaryFile
-from fpdf import FPDF
+from tempfile import NamedTemporaryFile
 
 __import__('pysqlite3')
 import sys
@@ -109,55 +108,62 @@ def generate_evaluation_report(emp_id):
     """
     return report
 
-def download_pdf(data):
-    # Response variable to write in the PDF
-    response_variable = data
+        # Create HTML content from the response
+    html_content = f/"""
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }}
+    </style>
+    </head>
+    <body>
+        {report.replace('\n', '<br>')}
+    </body>
+    </html>
+    """
+    return html_content
 
-    # Create instance of FPDF class
-    pdf = FPDF()
+def main():
+    st.title("Employee Evaluation Report")
 
-    # Add a page
-    pdf.add_page()
+    # List of employee IDs for the dropdown menu
+    employee_ids = ['E123', 'E124', 'E125']
 
-    # Set font
-    pdf.set_font("Arial", size=12)
+    # Creating form for user input
+    with st.form("emp_info_form"):
+        emp_id = st.selectbox("Select Employee ID", employee_ids)
+        submit_button = st.form_submit_button("Generate Report")
 
-    # Add a cell
-    pdf.cell(200, 10, txt=response_variable, ln=True, align='C')
+    if submit_button:
+        # Generate the HTML content for the report
+        html_content = generate_evaluation_report(emp_id)
+        st.write("### Employee Evaluation Report")
+        st.markdown(html_content, unsafe_allow_html=True)
 
-    # Save the PDF with name
-    pdf.output("response_variable.pdf")
-    
+        # Adding an Export to PDF button
+        if st.button('Export to PDF'):
+            # Converting HTML to PDF
+            pdf = pdfkit.from_string(html_content, False)
+            # Using a temporary file to hold the PDF
+            with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
+                tmpfile.write(pdf)
+                tmpfile.flush()  # Ensure all data is written to the file
+                tmpfile.close()  # Close the file to ensure it can be read on Windows systems
+                with open(tmpfile.name, "rb") as f:
+                    # Streamlit method to create a download button
+                    st.download_button(
+                        label="Download PDF",
+                        data=f.read(),
+                        file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
+                        mime="application/pdf"
+                    )
+                os.unlink(tmpfile.name)  # Clean up the temporary file
 
-st.title("Employee Evaluation Report")
 
-# List of employee IDs for the dropdown menu
-employee_ids = ['E123', 'E124', 'E125']
 
-emp_id = st.selectbox("Select Employee ID", employee_ids)
-submit_button = st.button("Generate Report")
-
-if submit_button:
-    # Generate the HTML content for the report
-    if 'html_content' not in st.session_state:
-        st.session_state.html_content = generate_evaluation_report(emp_id)
-
-    st.write("### Employee Evaluation Report")
-    download_pdf(st.session_state.html_content)
-    st.markdown(st.session_state.html_content, unsafe_allow_html=True)
-    
-# Path to your file
-file_path = 'response_variable.pdf'
-
-# Check if the file exists
-if os.path.isfile(file_path):
-    # Open the file in binary mode
-    with open(file_path, "rb") as file:
-        btn = st.download_button(
-                label="Download PDF",
-                data=file,
-                file_name="data.pdf",
-                mime="application/pdf"
-            )
-else:
-    print(f"The file {file_path} does not exist.")
+if __name__ == "__main__":
+    main()
