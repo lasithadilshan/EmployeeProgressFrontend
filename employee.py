@@ -144,9 +144,11 @@ def main():
         html_content = generate_evaluation_report(emp_id)
         st.write("### Employee Evaluation Report")
         st.markdown(html_content, unsafe_allow_html=True)
+        
+        download_btn = st.button("Download PDF")
 
         # Adding an Export to PDF button
-        if st.button('Export to PDF'):
+        if download_btn:
             # Response variable to write in the PDF
             response_variable = "This is the content that will be written to the PDF."
 
