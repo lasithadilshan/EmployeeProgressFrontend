@@ -147,7 +147,7 @@ if submit_button:
     st.markdown(st.session_state.html_content, unsafe_allow_html=True)
     
 
-if st.button('Download PDF'):
+if download_btn:
     # Create instance of FPDF class
     pdf = FPDF()
     pdf.add_page()
