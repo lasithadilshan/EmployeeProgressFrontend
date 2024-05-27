@@ -146,25 +146,27 @@ if submit_button:
     st.markdown(st.session_state.html_content, unsafe_allow_html=True)
     
 
-# Adding an Export to PDF button
-if download_btn:
-    # Response variable to write in the PDF
-    response_variable = "This is the content that will be written to the PDF."
+try:
+    if download_btn:
+        # Response variable to write in the PDF
+        response_variable = "This is the content that will be written to the PDF."
 
-    # Create instance of FPDF class
-    pdf = FPDF()
+        # Create instance of FPDF class
+        pdf = FPDF()
 
-    # Add a page
-    pdf.add_page()
+        # Add a page
+        pdf.add_page()
 
-    # Set font
-    pdf.set_font("Arial", size=12)
+        # Set font
+        pdf.set_font("Arial", size=12)
 
-    # Add a cell
-    pdf.cell(200, 10, txt=response_variable, ln=True, align='C')
+        # Add a cell
+        pdf.cell(200, 10, txt=response_variable, ln=True, align='C')
 
-    # Save the PDF with name
-    pdf.output("response_variable.pdf")
+        # Save the PDF with name
+        pdf.output("response_variable.pdf")
 
-    print("PDF created and content written successfully.")
+        print("PDF created and content written successfully.")
+except Exception as e:
+    print("An error occurred while creating the PDF:", e)
 
