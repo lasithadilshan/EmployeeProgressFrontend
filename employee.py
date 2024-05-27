@@ -150,12 +150,15 @@ if submit_button:
 # Path to your file
 file_path = 'response_variable.pdf'
 
-# Open the file in binary mode
-with open(file_path, "rb") as file:
-    btn = st.download_button(
-            label="Download PDF",
-            data=file,
-            file_name="data.pdf",
-            mime="application/pdf"
-        )
-    
+# Check if the file exists
+if os.path.isfile(file_path):
+    # Open the file in binary mode
+    with open(file_path, "rb") as file:
+        btn = st.download_button(
+                label="Download PDF",
+                data=file,
+                file_name="data.pdf",
+                mime="application/pdf"
+            )
+else:
+    print(f"The file {file_path} does not exist.")
