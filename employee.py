@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import pdfkit
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
