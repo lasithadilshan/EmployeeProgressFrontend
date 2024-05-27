@@ -133,10 +133,8 @@ st.title("Employee Evaluation Report")
 # List of employee IDs for the dropdown menu
 employee_ids = ['E123', 'E124', 'E125']
 
-# Creating form for user input
-with st.form("emp_info_form"):
-    emp_id = st.selectbox("Select Employee ID", employee_ids)
-    submit_button = st.form_submit_button("Generate Report")
+emp_id = st.selectbox("Select Employee ID", employee_ids)
+submit_button = st.form_submit_button("Generate Report")
 
 if submit_button:
     # Generate the HTML content for the report
