@@ -141,10 +141,11 @@ def main():
 
     if submit_button:
         # Generate the HTML content for the report
-        html_content = generate_evaluation_report(emp_id)
-        st.session_state.html_content = html_content
+        if 'html_content' not in st.session_state:
+            st.session_state.html_content = generate_evaluation_report(emp_id)
+
         st.write("### Employee Evaluation Report")
-        st.markdown(html_content, unsafe_allow_html=True)
+        st.markdown(st.session_state.html_content, unsafe_allow_html=True)
         
     download_btn = st.button("Download PDF")
 
