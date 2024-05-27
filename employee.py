@@ -164,7 +164,7 @@ if download_btn:
 
     # Provide download button
     st.download_button(label="Download your PDF",
-                       data=pdf_output,
-                       file_name="response_variable.pdf",
-                       mime='application/pdf')
+                    data=pdf_output.getvalue(),
+                    file_name="response_variable.pdf",
+                    mime='application/pdf')
 
