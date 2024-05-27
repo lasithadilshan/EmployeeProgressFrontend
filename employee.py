@@ -135,6 +135,7 @@ employee_ids = ['E123', 'E124', 'E125']
 
 emp_id = st.selectbox("Select Employee ID", employee_ids)
 submit_button = st.button("Generate Report")
+download_btn = st.button("Download PDF")
 
 if submit_button:
     # Generate the HTML content for the report
@@ -144,7 +145,6 @@ if submit_button:
     st.write("### Employee Evaluation Report")
     st.markdown(st.session_state.html_content, unsafe_allow_html=True)
     
-download_btn = st.button("Download PDF")
 
 # Adding an Export to PDF button
 if download_btn:
