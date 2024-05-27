@@ -128,50 +128,45 @@ def generate_evaluation_report(emp_id):
     """
     return html_content
 
-def main():
-    st.title("Employee Evaluation Report")
+st.title("Employee Evaluation Report")
 
-    # List of employee IDs for the dropdown menu
-    employee_ids = ['E123', 'E124', 'E125']
+# List of employee IDs for the dropdown menu
+employee_ids = ['E123', 'E124', 'E125']
 
-    # Creating form for user input
-    with st.form("emp_info_form"):
-        emp_id = st.selectbox("Select Employee ID", employee_ids)
-        submit_button = st.form_submit_button("Generate Report")
+# Creating form for user input
+with st.form("emp_info_form"):
+    emp_id = st.selectbox("Select Employee ID", employee_ids)
+    submit_button = st.form_submit_button("Generate Report")
 
-    if submit_button:
-        # Generate the HTML content for the report
-        if 'html_content' not in st.session_state:
-            st.session_state.html_content = generate_evaluation_report(emp_id)
+if submit_button:
+    # Generate the HTML content for the report
+    if 'html_content' not in st.session_state:
+        st.session_state.html_content = generate_evaluation_report(emp_id)
 
-        st.write("### Employee Evaluation Report")
-        st.markdown(st.session_state.html_content, unsafe_allow_html=True)
-        
-    download_btn = st.button("Download PDF")
+    st.write("### Employee Evaluation Report")
+    st.markdown(st.session_state.html_content, unsafe_allow_html=True)
+    
+download_btn = st.button("Download PDF")
 
-    # Adding an Export to PDF button
-    if download_btn:
-        # Response variable to write in the PDF
-        response_variable = "This is the content that will be written to the PDF."
+# Adding an Export to PDF button
+if download_btn:
+    # Response variable to write in the PDF
+    response_variable = "This is the content that will be written to the PDF."
 
-        # Create instance of FPDF class
-        pdf = FPDF()
+    # Create instance of FPDF class
+    pdf = FPDF()
 
-        # Add a page
-        pdf.add_page()
+    # Add a page
+    pdf.add_page()
 
-        # Set font
-        pdf.set_font("Arial", size=12)
+    # Set font
+    pdf.set_font("Arial", size=12)
 
-        # Add a cell
-        pdf.cell(200, 10, txt=response_variable, ln=True, align='C')
+    # Add a cell
+    pdf.cell(200, 10, txt=response_variable, ln=True, align='C')
 
-        # Save the PDF with name
-        pdf.output("response_variable.pdf")
+    # Save the PDF with name
+    pdf.output("response_variable.pdf")
 
-        print("PDF created and content written successfully.")
+    print("PDF created and content written successfully.")
 
-
-
-if __name__ == "__main__":
-    main()
