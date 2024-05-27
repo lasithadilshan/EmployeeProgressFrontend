@@ -14,6 +14,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
 from tempfile import NamedTemporaryFile
+from fpdf import FPDF
 
 __import__('pysqlite3')
 import sys
@@ -146,22 +147,25 @@ def main():
 
         # Adding an Export to PDF button
         if st.button('Export to PDF'):
-            # Converting HTML to PDF
-            pdf = pdfkit.from_string(html_content, False)
-            # Using a temporary file to hold the PDF
-            with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
-                tmpfile.write(pdf)
-                tmpfile.flush()  # Ensure all data is written to the file
-                tmpfile.close()  # Close the file to ensure it can be read on Windows systems
-                with open(tmpfile.name, "rb") as f:
-                    # Streamlit method to create a download button
-                    st.download_button(
-                        label="Download PDF",
-                        data=f.read(),
-                        file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
-                        mime="application/pdf"
-                    )
-                os.unlink(tmpfile.name)  # Clean up the temporary file
+            # Response variable to write in the PDF
+            response_variable = "This is the content that will be written to the PDF."
+
+            # Create instance of FPDF class
+            pdf = FPDF()
+
+            # Add a page
+            pdf.add_page()
+
+            # Set font
+            pdf.set_font("Arial", size=12)
+
+            # Add a cell
+            pdf.cell(200, 10, txt=response_variable, ln=True, align='C')
+
+            # Save the PDF with name
+            pdf.output("response_variable.pdf")
+
+            print("PDF created and content written successfully.")
 
 
 
