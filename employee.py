@@ -109,9 +109,9 @@ def generate_evaluation_report(emp_id):
     """
     return report
 
-def download_pdf():
+def download_pdf(data):
     # Response variable to write in the PDF
-    response_variable = "This is the content that will be written to the PDF."
+    response_variable = data
 
     # Create instance of FPDF class
     pdf = FPDF()
@@ -136,7 +136,6 @@ employee_ids = ['E123', 'E124', 'E125']
 
 emp_id = st.selectbox("Select Employee ID", employee_ids)
 submit_button = st.button("Generate Report")
-download_btn = st.button("Download PDF")
 
 if submit_button:
     # Generate the HTML content for the report
@@ -144,7 +143,7 @@ if submit_button:
         st.session_state.html_content = generate_evaluation_report(emp_id)
 
     st.write("### Employee Evaluation Report")
-    download_pdf()
+    download_pdf(st.session_state.html_content)
     st.markdown(st.session_state.html_content, unsafe_allow_html=True)
     
 # Path to your file
