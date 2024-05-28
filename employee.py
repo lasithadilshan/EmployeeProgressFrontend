@@ -139,6 +139,7 @@ def main():
 
     if submit_button:
         # Generate the HTML content for the report
+        process_file()
         html_content = generate_evaluation_report(emp_id)
         st.write("### Employee Evaluation Report")
         st.markdown(html_content, unsafe_allow_html=True)
