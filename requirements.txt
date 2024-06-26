@@ -8,3 +8,4 @@ pypdf2
 chromadb
 pysqlite3-binary
 fpdf
+protobuf==3.20.0
