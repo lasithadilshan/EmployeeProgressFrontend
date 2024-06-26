@@ -36,37 +36,8 @@ def process_file():
 
 def read_doc_and_generate_response(emp_id):
     prompt = f"""
-    Please generate an Employee Evolution Report for employee ID {emp_id}. This report should provide a comprehensive overview of the employee's performance and contributions over the evaluation period from January to December 2023.
-
-    1. **Introduction**:
-        - State the purpose of this report.
-        - Discuss the evaluation period and its relevance.
-
-    2. **Employee Summary**:
-        - Employee ID: {emp_id}
-        - Name: John Doe
-        - Position: Software Engineer
-        - Department: IT
-
-    3. **Performance Overview**:
-        - Performance Summary: Demonstrates excellent problem-solving abilities and punctuality in meeting deadlines.
-        - Top Performances and Achievements: Highlighting the development and launch of X software.
-
-    4. **Detailed Analysis**:
-        - Strengths: Technical expertise and problem-solving.
-        - Areas for Improvement: Communication and team collaboration.
-        - Future Goals: Leading major projects and enhancing team engagement.
-        - Professional Development: Impact of courses in machine learning and agile methodologies on his performance.
-
-    5. **Conclusion**:
-        - Summarize key findings and achievements.
-        - Recommendations for further professional development.
-
-    6. **Appendix**:
-        - Include any additional relevant data or feedback excerpts.
-
-    The report should be structured to provide actionable insights and detailed analysis of the employee's contributions and potential for future growth.
-
+    Think you as a Human Resource Manager.
+    Please provide the evaluation report to the given {emp_id} user.
 """
     vectordb = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
     retriever = vectordb.as_retriever(search_kwargs={"k":4})
@@ -140,7 +111,7 @@ def main():
     if submit_button:
         # Generate the HTML content for the report
         process_file()
-        html_content = generate_evaluation_report(emp_id)
+        html_content = read_doc_and_generate_response(emp_id)
         st.write("### Employee Evaluation Report")
         st.markdown(html_content, unsafe_allow_html=True)
 
