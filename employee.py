@@ -29,12 +29,9 @@ persist_directory = "app_db"
 def process_file():
     loader = PyPDFLoader('Employee.pdf')
     docs = loader.load()
-    print(docs)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
     splits = text_splitter.split_documents(docs)
     vectordb = Chroma.from_documents(splits, embedding=embeddings, persist_directory=persist_directory)
-    print("36 ",vectordb)
-    print("37 ",vectordb.persist())
     vectordb.persist()
 
 def read_doc_and_generate_response(emp_id):
