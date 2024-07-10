@@ -1,4 +1,3 @@
-import streamlit as st
 import os
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
@@ -14,10 +13,12 @@ from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
 from tempfile import NamedTemporaryFile
 
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+from typing import Union
+from fastapi import FastAPI
 
+app = FastAPI()
+
+os.environ["OPENAI_API_KEY"]= "sk-proj-w57OAely6LYXd0x6tYu8T3BlbkFJISQrSx4nShTsEDjp190Z"
 llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 embeddings = OpenAIEmbeddings()
 
@@ -78,63 +79,9 @@ def generate_evaluation_report(emp_id):
     """
     return report
 
-        # Create HTML content from the response
-    html_content = f/"""
-    <html>
-    <head>
-    <meta charset="utf-8">
-    <style>
-        body {{
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }}
-    </style>
-    </head>
-    <body>
-        {report.replace('\n', '<br>')}
-    </body>
-    </html>
-    """
-    return html_content
 
-def main():
-    st.title("Employee Evaluation Report")
-
-    # List of employee IDs for the dropdown menu
-    employee_ids = ['E123', 'E124', 'E125']
-
-    # Creating form for user input
-    with st.form("emp_info_form"):
-        emp_id = st.selectbox("Select Employee ID", employee_ids)
-        submit_button = st.form_submit_button("Generate Report")
-
-    if submit_button:
-        # Generate the HTML content for the report
-        process_file()
-        html_content = read_doc_and_generate_response(emp_id)
-        st.write("### Employee Evaluation Report")
-        st.markdown(html_content, unsafe_allow_html=True)
-
-        # Adding an Export to PDF button
-        if st.button('Export to PDF'):
-            # Converting HTML to PDF
-            pdf = pdfkit.from_string(html_content, False)
-            # Using a temporary file to hold the PDF
-            with NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
-                tmpfile.write(pdf)
-                tmpfile.flush()  # Ensure all data is written to the file
-                tmpfile.close()  # Close the file to ensure it can be read on Windows systems
-                with open(tmpfile.name, "rb") as f:
-                    # Streamlit method to create a download button
-                    st.download_button(
-                        label="Download PDF",
-                        data=f.read(),
-                        file_name=f"Employee_{emp_id}_Evaluation_Report.pdf",
-                        mime="application/pdf"
-                    )
-                os.unlink(tmpfile.name)  # Clean up the temporary file
-
-
-
-if __name__ == "__main__":
-    main()
+@app.get("/get_report/{emp_id}")
+def read_root(emp_id: str):
+    process_file()
+    report = read_doc_and_generate_response(emp_id)
+    return report
