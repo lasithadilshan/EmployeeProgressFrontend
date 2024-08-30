@@ -12,23 +12,24 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
 from tempfile import NamedTemporaryFile
+from app_secrets import OPENAI_API_KEY
 
 from typing import Union
 from fastapi import FastAPI
 
 app = FastAPI()
 
-os.environ["OPENAI_API_KEY"]= "sk-proj-w57OAely6LYXd0x6tYu8T3BlbkFJISQrSx4nShTsEDjp190Z"
+os.environ["OPENAI_API_KEY"]= OPENAI_API_KEY
 llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 embeddings = OpenAIEmbeddings()
 
-file = "/Employee.pdf"
+file = "/J01B5400028Attach5-BRD.pdf"
 persist_directory = "app_db"
 
 
 
 def process_file():
-    loader = PyPDFLoader('Employee.pdf')
+    loader = PyPDFLoader('J01B5400028Attach5-BRD.pdf')
     docs = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
     splits = text_splitter.split_documents(docs)
@@ -37,8 +38,8 @@ def process_file():
 
 def read_doc_and_generate_response(emp_id):
     prompt = f"""
-    Think you as a Human Resource Manager.
-    Please provide the evaluation report to the given {emp_id} user.
+     Think you as senior buissness analysis. Your responsibility is read the Buissness Requiremnt Document and Write the User Stories according to that BRD.
+ Think step by step and write the all possible user stories to the Buissness Requiremnt Document.
 """
     vectordb = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
     retriever = vectordb.as_retriever(search_kwargs={"k":4})
