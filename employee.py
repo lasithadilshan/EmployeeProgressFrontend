@@ -19,7 +19,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-os.environ["OPENAI_API_KEY"]= OPENAI_API_KEY
+os.environ["OPENAI_API_KEY"]= "sk-proj-w57OAely6LYXd0x6tYu8T3BlbkFJISQrSx4nShTsEDjp190Z"
 llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 embeddings = OpenAIEmbeddings()
 
