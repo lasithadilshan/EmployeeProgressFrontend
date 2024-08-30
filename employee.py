@@ -12,7 +12,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationalRetrievalChain
 from tempfile import NamedTemporaryFile
-from app_secrets import OPENAI_API_KEY
+# from app_secrets import OPENAI_API_KEY
 
 from typing import Union
 from fastapi import FastAPI
